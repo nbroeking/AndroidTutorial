@@ -20,149 +20,91 @@
 <body>
     <div class="container">
         <h1>Basics</h1>
-        <p>Now that we have started with some basic android lets talk about the different peices of the app.</p>
-        <h3>Application</h3>
-        <p>The application is managed by </p>
-        <pre>
-            <code>
-var http = require("http");
-
-var server = http.createServer(function (request, response) {
-
-   // Send the HTTP header 
-   //Sending a response code of OK with plain text Content Type
-   response.writeHead(200, {'Content-Type': 'text/plain'});
-   
-   response.end('This is the content of the web page\n');
-});
-server.listen();
-
-// Console will print the port
-console.log('Server is listening on port 1234');
-            </code>
-        </pre>
         
-        <p>Lets break this code down line by line. The first line </p><code>var http = requre("http");</code> <p>is essentially an import statement. It is including that the program uses the http module. We will talk about this more in the next section but for now just think of it as a collection of related code. Once we imported the http module we can set up an event listener for http requests.</p>
+        <h3>Android Framework </h3>
+        <p>Android is an event based framework that queues up events similar to other event frameworks. Android provides call backs for these different events allowing different objects to be notified when certain events occure. Android apps are native apps and thus are tied very closley with the android operating system. The operating system gets events such as touches, networking data received, as well as communication from other processes and queues them up for the app to process. </p>
         
-        <pre> <code>
-var server = http.createServer(function (request, response) {
-
-// Send the HTTP header 
-//Sending a response code of OK with plain text Content Type
-response.writeHead(200, {'Content-Type': 'text/plain'});
-   
-response.end('This is the content of the web page\n');
-});
-        </code></pre>
-        <p>This code is creating a variable server that is essentially an event handler that will call the anonymous callback function anytime there is a http request. The call back function writes the http header to be a return status of OK and says the type is plain text. The last thing is it sends the html body. Normally, this is where you load if from a file or generate it on the fly but whatever you send here the clients browser will parse as html.</p>
+        <h3>Context</h3>
+        <p>Android is built around the concept of a context. A context is a way to represent the current application environment. We will talk a little more about these later but the important part is to understand what they are. Essentially, anytime the app needs to interact with the environment, things like the filesystem or screen, then you need a context in which to interact. The root context is the application context which is held by the application singleton. However each activity and service also holds on the context as well.</p>
         
+        <h3>Event Loop</h3>
+        <p>We have mentioned several times that the android framework has an event loop. If your not familier with the concept the idea is that the operating system will queue up events and then the main thread will process them. Events can be a list of things but mainly they are things related to the android lifecycle, more on this later, and user actions. For example when the user presses a button an touch event will get triggered and the approptiate callback will get called on the view that it happened on. Another great example is when the phone gets low battery. A low battery event will get triggered and the application will process it.</p>
+        
+        <p>Now that we have started with some basic android lets talk about the three main important pieces of an android application.</p>
         <br>
-        <p>The next line </p> <code>server.listen()</code> tells the Node.JS event queue that you are subscribing the servers handler. Any http request will now be processed. If you leave this line out the event handler will never get registered, and as we explained before the program will exit because the event handler has no handlers to process events.</p>
-    
-        <br>
-        <p>Once the handler is registered then the console prints to the command line the port it is listening on: </p><code>console.log('Server is listening on port 1234');</code> <p> The main.js returns back to the environment which then proceeds to execute the event queue. Until the program is killed our Node.JS app will continue to process web requests always answering the content.</p>
-    
-    <br>
-    <p>To give this a try save the above code as main.js and execute it by running node main.js. Then open your browser and go to the url: localhost:1234 and watch our basic application.</p>
-    
-    <h3>Event Handlers and Emitters</h3>
-    <p>As we mentioned a thousand times before Node.JS is an event based framework. This means that there are three major pieces. The Events, Event Handlers, and the Event Emitters. We have already talked about how the event loop sits there and waits for events to get put on its queue and then processes them. However, we haven't mentioned how the events get put on that queue in the first place. These things that generate events are called event emitters. Lets talk about the main event emitter, the OS. </p>
-    
-    <h4>The OS</h4>
-    <p>The easiest way to get your head around event emitters to first talk about the one that already exists, the OS. The os sends out signals and the application can handle them and put them on the queue. Going back to our c++ example from the previous slide, we might do something like.</p>
-    
-            <pre>
-            <code>
-            
-BlockingQueue *queue;
 
-void catchSigInt(int signum){
-    if( queue != Null){
-        Event *e = new QuitEvent();
-        queue.push(e);
+        <h3>1.) Application</h3>
+        <p>The application object holds a lot of power. Not only does it control the event loop and acts as the root of the application but because it is a singleton you are able to access it from anywhere. This is normally where developers store the state of the application because it gives the rest of the application access to it. Many people overload the default applicatoin object by subclassing it and overriding its members. This is a basic stub of the application object that you would need to overload. Many of the members you can leave but the nice thing is that the event loop will call each one of these methods on different events. </p>
+        
+<pre><code>
+public class OurApplication extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
-}
-int main(int argc, char* argv[]){
-                
-    std::vector&ltHandler&gt handlers;
-    *queue = new BlockingQueue();
-      
-    //Set up the handlers
-    
-    //Set up the emiters
-    signal(SIGINT, catchSigInt);
-    
-    while(shouldRun){
-        Event e = queue.pop(); //Blocks until there is an event to process
-                    
-        for(std::vector&ltHandler&gt::iterator it = handlers.begin(); it != handlers.end(); ++it){
-            *it.handle(event); //Only call handle if the handler is subscribed to the certain event
-        }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+    }
+
+    public OurApplication() {
+        super();
+    }
+
+    @Override
+    public void registerComponentCallbacks(ComponentCallbacks callback) {
+        super.registerComponentCallbacks(callback);
+    }
+
+    @Override
+    public void unregisterComponentCallbacks(ComponentCallbacks callback) {
+        super.unregisterComponentCallbacks(callback);
+    }
+
+    @Override
+    public void registerActivityLifecycleCallbacks(ActivityLifecycleCallbacks callback) {
+        super.registerActivityLifecycleCallbacks(callback);
+    }
+
+    @Override
+    public void registerOnProvideAssistDataListener(OnProvideAssistDataListener callback) {
+        super.registerOnProvideAssistDataListener(callback);
+    }
+
+    @Override
+    public void unregisterOnProvideAssistDataListener(OnProvideAssistDataListener callback) {
+        super.unregisterOnProvideAssistDataListener(callback);
+    }
+
+    @Override
+    public void unregisterActivityLifecycleCallbacks(ActivityLifecycleCallbacks callback) {
+        super.unregisterActivityLifecycleCallbacks(callback);
     }
 }
 
-            </code>
-        </pre>
-    
-        <p>Hopefully this seems pretty straight forward. When the os has something to report the signal handlers generate an event object and push it onto the queue. This is exactly what happens with our server example above. When the os wakes up our program with the socket read from the http request. An event gets generated and pushed onto the queue. Our server handler wakes up and then handles that event. This process is so efficient and easy that this has become the fundamental for all event based systems.</p>
-    
-    <h4>Node.JS event Emitters</h4>
-    <p>You may be asking, Why do I care about the OS event emitter is Node.JS handles everything for me? Well the answer is easy. With Node.JS we are able to create our own event emitters. In order to do this we need to introduce a new module, the events module. The events module is used just like the http module. Once we require it we are free to use all of its features. The one were after is called the event emitter and we can create one just like.</p>
-    <pre> <code>
-//Require the module
-var events = require("events");
+</code>
+</pre>
+        <p>The application object is where all events trickle down from so it has access to all the possible call backs. Many applications though only have a gui and thus putting information in the application object become a little overkill. The solution to this is activities.</p>
+        <br>
+        <h3>2.) Activities</h3>
+        <p></p>
 
-//Create the event emiter
-var eventEmitter = new events.EventEmmitter();
-
-    </code></pre>
-    
-    <p>That's all it takes to create an event emitter but emitting events becomes pretty useless if you don't have a handler to process them. What we need to do is to create an event handler with a callback and then bind it to the event type. To do this we can add to our code.</p>
-        <pre> <code>
-//Require the module
-var events = require("events");
-
-//Create the event emiter
-var eventEmitter = new events.EventEmmitter();
-
-//Create the handler
-var ourhandler = function handle(){
-    console.log('we need to handle the event');
-}
-
-//Now we need to bind the connection
-eventEmitter.on('event', ourhandler);
-
-    </code></pre>
-    
-    <p>The final step is to them emit the event. We can tie it all together now with emitting the event. </p>
-    
-            <pre> <code>
-//Require the module
-var events = require("events");
-
-//Create the event emitter
-var eventEmitter = new events.EventEmitter();
-
-//Create the handler
-var ourhandler = function handle(){
-    console.log('we need to handle the event');
-}
-
-//Now we need to bind the connection
-eventEmitter.on('event', ourhandler);
-
-//fire the event
-eventEmitter.emit('event');
-
-    </code></pre>
-    
-    <p>That is all it takes to set up event emitters and event handlers in Node.JS. You can test this code by copying into a file called main.js and running node main.js and testing the output. The events module provides events like this in a synchronous way using the observer design pattern.</p>
-    
-    <h3>Next Chapter</h3>
-    
-    <p>We have talked about the event queue and how to start your very own node application the next thing we are going to talk about are these modules you have heard so much about. Click the modules button at the top of the screen to learn more.</p>
-        
     </div>
 </body>
 </html>
