@@ -34,7 +34,9 @@
         <br>
 
         <h3>1.) Application</h3>
-        <p>The application object holds a lot of power. Not only does it control the event loop and acts as the root of the application but because it is a singleton you are able to access it from anywhere. This is normally where developers store the state of the application because it gives the rest of the application access to it. Many people overload the default applicatoin object by subclassing it and overriding its members. This is a basic stub of the application object that you would need to overload. Many of the members you can leave but the nice thing is that the event loop will call each one of these methods on different events. </p>
+        <p>The application object holds a lot of power. Not only does it control the event loop and acts as the root of the application but because it is a singleton you are able to access it from anywhere. The application object owns the activities as well as the services and anything that seems hidden from view. The nice thing that most of it is hidden and works behind the scenes but it is still good to know where all of that lives. </p>
+        <br>
+        <p>The application object is normally where developers store the state of the application because it gives the rest of the application access to it. Many people overload the default applicatoin object by subclassing it and overriding its members. This is a basic stub of the application object that you would need to overload. Many of the members you can leave but the nice thing is that the event loop will call each one of these methods on different events. </p>
         
 <pre><code>
 public class OurApplication extends Application {
@@ -103,8 +105,72 @@ public class OurApplication extends Application {
         <p>The application object is where all events trickle down from so it has access to all the possible call backs. Many applications though only have a gui and thus putting information in the application object become a little overkill. The solution to this is activities.</p>
         <br>
         <h3>2.) Activities</h3>
-        <p></p>
+        <p>An activity is probably the single most important type of class that developers will be interacting with when creating android apps. They are so important in fact that were dedicating a whole page to it. Here we will give a little preview into how they work. Activities control the current gui. A common way to develop apps is to create an activity for each page and then change activities when needed. Below is an example for how the main activity looks after creation. </p>
 
+<pre> <code>
+public class OurActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_activity2);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main_activity2, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+}
+</code></pre>
+        <br>
+        <p>Activites control a context just like the application object. This simple fact makes them extremely powerful. They are able to process events off of the event loop. When the application gets a new event one of the first things it does is check what callback he is supposed to call. Activities will get call backs for all of androids main events allowing them to keep track of what is going on with the system. </p>
+        <br>
+        <p>We will talk a little more about what each piece of this does on the next page. For now lets jump to the final important piece to applications.</p>
+        <br>
+        <h3>3.) Services</h3>
+        <p>Services are like gui less activities. Essentially, they are able to process events directly from the application just like activities but they don't need to keep track of gui. Everything in android that we have talked about so far happens on the main thread. That means that if you need to do time consuming things in an activity then your going to block your gui. The solution to this was the introduction of services. Services are still actually processed on the main thread but they provide a place where you can put another thread and allow the service to offload the work. Code for the services are very simple and have the simmilar callbacks to activities, the application, and other context classes. A shell service looks like:</p>
+        
+<pre><code>
+public class MyService extends Service {
+    public MyService() {
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+}
+</code></pre>
+        
+        <p>We will dive more into the binder callbacks in the services section but essentially they provide a way for the service to communicate back to the activities, whether they be in another app or in this one.</p>
+        <br>
+        <br>
+        <p>So we have established that activites and services both receive events using the main threads event loop. They also communicate to each other via these events allowing for things to be queued up really nicley. The powerful thing about these events is that anyone on the phone is able to send them allowing other applications to interact with the services or activities in your app. To do this android created the concept of intents.</p>
+        
+        <h3>Intents</h3>
+        <p>Intents are what android uses as events and to queue up an event you need to send an intent via a context. When you send the intent. The android os will process the event and then give it to whatever applications have subscribed to it. This is extremly powerful because it provieds a very easy way to do inter process communication between applications on the phone. </p>
+        
+        <h3>Next Chapter</h3>
+        <p>We have now given you the basic overview of an android application. Next we will jump deeper into the android lifecycle, the basis for all activities and services. After that we will talk more about activities and services and the powerful things you can do with them.</p>
     </div>
 </body>
 </html>
