@@ -27,14 +27,29 @@
         <h4>Started</h4>
         A started, or unbound service, is the state of a service when it has been created by some application component, but does not yet have an application component bound to it. At this point, it is simply running indefinitely in the background. Furthemore, it is not linked to the component that created it, so even if that component is destroyed, the service will remain. In your code, <code>startService()</code> method call will "start" a service. 
         <h4>Bound</h4>
-        After a service has been started, it can be bound to an application component. This connection allows for the bound component to communicate with the service, and is initiliazed using the <code>bindService()</code> method call. 
+        After a service has been started, it can be bound to an application component. This client/server connection allows for the bound component to communicate with the service, and is initiliazed using the <code>bindService()</code> method call. 
         <h3>Creating a Service</h3>
-        <p> The below code will create a simple service. Remember that, when adding something like a service, we will need to update our Manifest to include a reference to our service in the App Manifest. 
+        <p>Remember that, when adding something like a service, we will need to first update our Manifest to include a reference to our service in the App Manifest. We will call our service ExampleService. 
+
+<pre></code>
+&ltapplication&gt
+    ...
+    &ltservice
+            android:name=".ExampleService"
+            android:enabled="true" /&gt
+&lt/application&gt
+</pre></code>
+
+<p> Now we can go ahead and create the java code for our service. Consider the significant methods, <code>onStartCommand()</code> and <code>bindService()</code> which directly relate to initiating the various service states. </p>
+
 <pre><code>
 public class ExampleService extends Service 
 {
-    // Passed back to indicate the mode a service starts in. 
+    // Passed back to indicate the mode a service starts in, and how to behave when it's killed. 
     int mStartMode;
+
+    // This object receives interactions from clients. 
+    IBinder mBinder; 
 
     // Called when the service is being created.    
     public void onCreate() {
@@ -44,16 +59,26 @@ public class ExampleService extends Service
     // Called when the service is being started, using the startService() method.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-    return mStartMode;
+        Log.i("Service started!");
+        // Do stuff here
+        return mStartMode;
     }
 
     // Called when a client binds to the service, using the bindService() method.
     @Override
-    public IBinder onBind() {
-    super.onCreate();
+    public IBinder onBind(Intent intent) {
+        return mBinder; 
     }
+
+    @Override
+    public void onDestroy() {
+        Log.i("Service is shutting down");
+    }
+
+    ... 
 }
 </pre></code>
+
 
 
 </body>
