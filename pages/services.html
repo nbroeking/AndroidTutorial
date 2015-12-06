@@ -25,7 +25,7 @@
         <h3>States of a Service</h3>
         <p>A service can exist in two different states, started(unbounded), or bounded. 
         <h4>Started</h4>
-        A started, or unbound service, is the state of a service when it has been created by some application component, but does not yet have an application component bound to it. At this point, it is simply running indefinitely in the background. Furthemore, it is not linked to the component that created it, so even if that component is destroyed, the service will remain. In your code, <code>startService()</code> method call will "start" a service. 
+        A started, or unbound, service is the state of a service when it has been created by some application component, but does not yet have an application component bound to it. At this point, it is simply running indefinitely in the background. Furthemore, it is not linked to the component that created it, so even if that component is destroyed, the service will remain. In your code, <code>startService()</code> method call will "start" a service. 
         <h4>Bound</h4>
         After a service has been started, it can be bound to an application component. This client/server connection allows for the bound component to communicate with the service, and is initiliazed using the <code>bindService()</code> method call. 
         <h3>Creating a Service</h3>
@@ -49,7 +49,7 @@ public class ExampleService extends Service
     int mStartMode;
 
     // This object receives interactions from clients. 
-    IBinder mBinder; 
+    IBinder mBinder = new LocalBinder(); 
 
     // Called when the service is being created.    
     public void onCreate() {
@@ -70,15 +70,73 @@ public class ExampleService extends Service
         return mBinder; 
     }
 
+    // Extension of binder 
+    public class LocalBinder extends Binder {
+      public ExampleService getExampleServiceInstance() {
+       return ExampleService.this;
+      }
+     }
+
     @Override
     public void onDestroy() {
         Log.i("Service is shutting down");
     }
 
+    public void doSomething() {
+        ... 
+    }
+}
+
     ... 
 }
 </pre></code>
 
+<p> The corresponding code to start or bind to your service will most likely show up in an activity. Consider the following example. </p>
+<pre><code>
+public class ExampleActivity extends Activity {
+
+    boolean mBounded = false; 
+    ExampleService exampleServ; 
+
+    ... 
+
+    public void CreateUnboundedService() {
+        // Create the intent that will specify which service to start. 
+        Intent intent = new Intent(this, ExampleService.class); 
+
+        // Starts the service (Unbound)
+        startService(intent);
+    }
+
+    public void CreateBoundedService() {
+        // Create the intent that will specify which service to start. 
+        Intent intent = new Intent(this, ExampleService.class); 
+
+        // Starts the service (Bound)
+        bindService(intent, mConnection, BIND_AUTO_CREATE);
+
+        // We now have access to public methods of service bound to. 
+        exampleServ.doSomething(); 
+    }
+
+
+    ServiceConnection mConnection = new ServiceConnection() {
+  
+      public void onServiceDisconnected(ComponentName name) {
+       mBounded = false;
+       exampleServ = null;
+      }
+      
+      public void onServiceConnected(ComponentName name, IBinder service) {
+       mBounded = true;
+       LocalBinder mLocalBinder = (LocalBinder)service;
+       exampleServ = mLocalBinder.getExampleServiceInstance();
+      }
+     };
+}
+</pre></code>
+<p> Source example binding-implementation code based off: <a href="http://dharmendra4android.blogspot.com/2012/05/bind-service-using-ibinder-class.html">http://dharmendra4android.blogspot.com/2012/05/bind-service-using-ibinder-class.html</a> </p>
+<p> First, the <code>CreateUnboundService()</code> method demonstrates how to simply use an intent to start a service. In our case, our intent specifies the "ExampleService" so, when passed that intent, <code>startService()</code> spins up a new Example Service. However, if we want to be bound to that service, so that we have access to it's public methods, things get slightly more complex. Consider the <code>CreateBoundedService()</code> method. This method, again, creates an intent, but this time uses <code>bindService()</code> method to start the service. This not only starts the service, but also binds to it. In order to bind to the service, we must pass additional parameters, including a ServiceConnection and an integer flag for binding setting. However, in order to do this, you will notice that we also had to implement an instance of ServiceConnection, which we call mConnection. Two methods, <code>onServiceConnected()</code> and <code>onServiceDisconnected()</code> must be implemented as well. <code>onServiceConnected()</code> gets us an instance of the iBinder, which we can simply cast to a LocalBinder. Using this binder, we can actually get a reference to our original server, which we call "exampleServ". Now all public methods of the service can be called using this object. <code>onServiceDisconnected()</code> must also be implemented in order to remove our reference to this object, and update the mBounded flag appropriately. </p>
 
 
 </body>
