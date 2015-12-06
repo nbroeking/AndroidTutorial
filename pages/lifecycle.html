@@ -21,16 +21,16 @@
     <div class="container">
         <h1>Android Lifecycle</h1>
     
-        <p>The android lifecycle is a critical part to an android application that allows you to create dynamic apps that respond extremly well to the user. The android lifcycle consists of events that are generated based off of the state of the application. Every context, the application, activities, and services are hooked up to the event queue to receive callbacks when these events occur. </p>
+        <p>The android lifecycle is a critical part to an android application that allows you to create dynamic apps that respond extremely well to the user. The android lifecycle consists of events generated based off of the state of the application. Every context, the application, activities, and services are hooked up to the event queue to receive callbacks when these events occur. </p>
         
-        <h3>Lifecyle</h3>
+        <h3>Lifecycle</h3>
         <img src="./img/lifecycle.png" class="img-rounded" alt="Android Lifecycle">
         <p>Source From: http://stackoverflow.com/questions/8515936/android-activity-life-cycle-what-are-all-these-methods-for</p>
         
         <p>This is the lifecycle. It shows the path that all context objects take when certain application events happen.</p>
         
         <h3>Example</h3>
-        <p>For example lets look at an activity. We will talk about them more on the next slide but for now you can think of them as the view that the android application shows on the screen. The first thing that is going to happen is the view is going to be created. When it is created the onCreate callback will get called. Then when it is about to be shown the view will be started and onStart will get called. Then once it is displayed the onResume will get called. Then lets say you got a phone call and the phone has to hide your view temporarly. On Pause will get called to do this. Once the phonecall is over and the phone tries to show your screen on resume will get called again. Once your view is done and android is about to remove it onstop will get called. Once the view is stopped the os gets to decide if it should keep it around because it could be used again or if it should be destroyed and re created later. Depending on what it decides either onRestart will get called or onDestroy.</p>
+        <p>For example let’s look at an activity. We will talk about them more on the next slide but for now you can think of them as the view that the android application shows on the screen. The first thing that is going to happen is the view is going to be created. When it is created the <code>onCreate()</code> callback will get called. Then when it is about to be shown the view will be started and <code>onStart()</code> will get called. Then once it is displayed the <code>onResume()</code> will get called. Then let’s say you got a phone call and the phone has to hide your view temporarily. <code>onPause()</code> will get called to do this. Once the phone call is over and the phone tries to show your screen </code>onResume()</code> will get called again. Once your view is done and android is about to remove it, <code>onStop()</code> will get called. Once the view is stopped the OS gets to decide if it should keep it around because it could be used again or if it should be destroyed and re-created later. Depending on what it decides either <code>onRestart()</code> will get called or <code>onDestroy()</code>.</p>
         
         <h3>Why is this useful?</h3>
         <p>The lifecycle allows programmers to set up timers, tear down timers, or anything else that should be changed based of the state. Also not all callbacks are required. You only need to implement the methods that you want allowing for very fine grained control over your applications.</p>
