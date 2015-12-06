@@ -20,14 +20,14 @@
 <body>
     <div class="container">
         <h1>Services</h1>
-        <p>Services are another integral piece of Android development. As we dive into services, you will see some similarity between them, and the aformentioned activities. However, a service, unlike an activity, does not interact directly with the user. Therefore, there is no GUI component to it. These are instead, powerful background processes. A major benefit, and differentiator from activities are that services run at a higher priority than inactive or invisible activities. This means that it is less likely the Android system will ever terminate them for resource management. For perspective, common use-cases for services are long-running background tasks such as GPS, music streaming, notification triggering, etc. 
+        <p>Services are another integral piece of Android development. As we dive into services, you will see some similarity between them, and the aformentioned activities. However, a service, unlike an activity, does not interact directly with the user. Therefore, there is no GUI component to it. These are instead, powerful background processes. A major benefit, and differentiator from activities are that services run at a higher priority than inactive or invisible activities. This means that it is less likely the Android system will ever terminate them for resource management. Its important to know though that services still process intents on the main UI thread so any long running task will block the ui and all other events. There are several options for preventing this that we talk about on the Async Page. 
         </p>
         <h3>States of a Service</h3>
         <p>A service can exist in two different states, started(unbounded), or bounded. 
         <h4>Started</h4>
-        A started, or unbound, service is the state of a service when it has been created by some application component, but does not yet have an application component bound to it. At this point, it is simply running indefinitely in the background. Furthemore, it is not linked to the component that created it, so even if that component is destroyed, the service will remain. In your code, <code>startService()</code> method call will "start" a service. 
+        A started, or unbound, service is the state of a service when it has been created by some application component, but does not yet have an application component bound to it. At this point, it is simply running indefinitely in the background. furthermore, it is not linked to the component that created it, so even if that component is destroyed, the service will remain. In your code, <code>startService()</code> method call will "start" a service. 
         <h4>Bound</h4>
-        After a service has been started, it can be bound to an application component. This client/server connection allows for the bound component to communicate with the service, and is initiliazed using the <code>bindService()</code> method call. 
+        After a service has been started, it can be bound to an application component. This client/server connection allows for the bound component to communicate with the service, and is initialized using the <code>bindService()</code> method call. 
         <h3>Creating a Service</h3>
         <p>Remember that, when adding something like a service, we will need to first update our Manifest to include a reference to our service in the App Manifest. We will call our service ExampleService. 
 
@@ -91,7 +91,7 @@ public class ExampleService extends Service
 }
 </pre></code>
 
-<p>Notice that we also create the mBinder object in this class, which will allow for binding to this service. In order to make things easier, we actually extend the binder class to create LocalBinder, which provides us an easy getter for the service instance. <code>DoSomething()</code> is a public method that we can imagine our activity wanting access to, once it's boundt o the service. </p>
+<p>Notice that we also create the mBinder object in this class, which will allow for binding to this service. In order to make things easier, we actually extend the binder class to create LocalBinder, which provides us an easy getter for the service instance. <code>DoSomething()</code> is a public method that we can imagine our activity wanting access to, once it's bounded to the service. </p>
 <br>
 <p> The corresponding code to start or bind to your service will most likely show up in an activity. Consider the following example. </p>
 <pre><code>
