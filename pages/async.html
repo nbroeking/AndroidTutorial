@@ -20,10 +20,10 @@
 <body> 
     <!-- INTRO --> 
     <h1>ASync Methods</h1>
-    <p>Android like we have mentioned uses a single thread on a main event loop. This brings up some obvious issues especially when you need to have long data processing. Thankfully android provides some very good multithreading frameworks to allow for async method calls.</p>
+    <p>Android, like we have mentioned, uses a single thread on a main event loop. This brings up some obvious issues especially when you need to have long data processing. Thankfully android provides some very good multithreading frameworks to allow for async method calls.</p>
     
     <h3>1.) Java Executors and Thread Pools</h3>
-    <p>The first main thing that android provides is everything that the java libraries provide. A common thing to do is to create an executor or a thread pool within the service. Then any intent you get can be passed off to the executor or thread pool to execute.</p>
+    <p>The first main thing that android provides is everything that the java libraries provide. A common thing to do is create an executor or a thread pool within the service. That way, any intent you get can be passed off to the executor or thread pool to execute.</p>
 
     <pre><code>
 public class MyService extends Service {
@@ -158,7 +158,7 @@ public class MyIntentService extends IntentService {
     </code></pre>
     
     <h3>3.) Async Tasks</h3>
-    <p>The final thing that android provides for async methods are Async Tasks. Unlike the previous two options Async Tasks allow you to execute code from anywhere not just inside the service. Async tasks are very similar to a runnable object. The first thing you do is create a new class the inherits from AsyncTask and then you overload the methods that you need. Here is the shell for an Async Task provided by android: </p>
+    <p>The final thing that android provides for async methods are Async Tasks. Unlike the previous two options, Async Tasks allow you to execute code from anywhere not just inside the service. Async tasks are very similar to a runnable object. The first thing you do is create a new class that inherits from AsyncTask and then overload the methods that you need. Here is the shell for an Async Task provided by android: </p>
     
     <pre><code>
  private class OurAsyncTask extends AsyncTask<String, Integer, Long> {
@@ -177,12 +177,12 @@ public class MyIntentService extends IntentService {
     </code></pre>
     <br>
     <h4>Type Parameters</h4>
-    <p>If you notice the ASyncTask class takes three type parameters the first is the type of the parameters send to the async task. The second is the type of the progress unit send back from onProgress, and the third is the result of the async task. If you don't need them you can always set them to void.</p>
+    <p>You will notice the ASyncTask class takes three type parameters. The first is the type of the parameters to send to the async task. The second is the type of the progress unit sent back from onProgress, and the third is the result of the async task. If you don't need them you can always set them to void.</p>
     
     <h4>Methods</h4>
-    <p>There are several methods here that you can overload, the main one is doInBackground. This method is the actual method that gets run in a background thread. The next method is the onProgressUpdate. This method provides a way to show updates from the do in background. This is very useful when you are downloading a file and want to report the percentage downloaded. The final is onPostExecute. This method gets executed back on the main UI thread after doInBackground has completed. </p>
+    <p>There are several methods here that you can overload, the main one is <code></code>doInBackground()</code>. This method is the actual method that gets run in a background thread. The next method is the <code></code>onProgressUpdate()</code>. This method provides a way to show updates from the do in background. This is very useful when you are downloading a file and want to report the percentage downloaded. The final is <code></code>onPostExecute()</code>. This method gets executed back on the main UI thread after <code>doInBackground()</code> has completed. </p>
     <br>
-    <p>These three methods are what 90% of developers use to create an async task. However if you need more control android provides other methods that you can overload that provides more control when interacting with an async task. Were not going to talk about these here but if your interested in learning more the android api website provides more information.</p><br>
+    <p>These three methods are what 90% of developers use to create an async task. However if you need more control, android provides other methods that you can overload that provide more control when interacting with an async task. We are not going to talk about these here but if your interested in learning more the android api website provides more information.</p><br>
     <a href="http://developer.android.com/reference/android/os/AsyncTask.html">Learn More about Async Tasks Here</a>
     
     <h4>Async Task Full Example</h4>
