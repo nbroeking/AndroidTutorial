@@ -71,7 +71,7 @@ public class MyService extends Service {
     </code></pre>
     
     <h3>2.) Intent Service</h3>
-    <p>The next option is what android calls the intent service. Services do not process their intents on a separate thread and because google didn't want everyone to have to create their own executors they created their own version of what we just wrote called a IntentService. The Intent Service will process all intents on a separate thread just like we did. To do this we create an intent service that has the framework.</p>
+    <p>The next option is what android calls the intent service. Services do not process their intents on a separate thread and because google didn't want everyone to have to create their own executors they created their own version of what we just wrote called an IntentService. The Intent Service will process all intents on a separate thread just like we did. To do this we create an intent service that has the framework.</p>
     
     <pre><code>
 public class MyIntentService extends IntentService {
@@ -182,11 +182,11 @@ public class MyIntentService extends IntentService {
     <h4>Methods</h4>
     <p>There are several methods here that you can overload, the main one is <code></code>doInBackground()</code>. This method is the actual method that gets run in a background thread. The next method is the <code></code>onProgressUpdate()</code>. This method provides a way to show updates from the do in background. This is very useful when you are downloading a file and want to report the percentage downloaded. The final is <code></code>onPostExecute()</code>. This method gets executed back on the main UI thread after <code>doInBackground()</code> has completed. </p>
     <br>
-    <p>These three methods are what 90% of developers use to create an async task. However if you need more control, android provides other methods that you can overload that provide more control when interacting with an async task. We are not going to talk about these here but if your interested in learning more the android api website provides more information.</p><br>
+    <p>These three methods are what 90% of developers use to create an async task. However if you need more control, android provides other methods that you can overload that provide more control when interacting with an async task. We are not going to talk about these here but if you're interested in learning more the android api website provides more information.</p><br>
     <a href="http://developer.android.com/reference/android/os/AsyncTask.html">Learn More about Async Tasks Here</a>
     
     <h4>Async Task Full Example</h4>
-    <p>A good example of when to use async tasks is when your working with downloading files. The android website provides a great example of how to do this using async tasks.</p>
+    <p>A good example of when to use async tasks is when you're working with downloading files. The android website provides a great example of how to do this using async tasks.</p>
     <pre><code>
  private class DownloadFilesTask extends AsyncTask<URL, Integer, Long> {
      protected Long doInBackground(URL... urls) {

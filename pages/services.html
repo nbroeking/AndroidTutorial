@@ -20,7 +20,7 @@
 <body>
     <div class="container">
         <h1>Services</h1>
-        <p>Services are another integral piece of Android development. As we dive into services, you will see some similarity between them, and the aformentioned activities. However, a service, unlike an activity, does not interact directly with the user. Therefore, there is no GUI component to it. These are instead, powerful background processes. A major benefit, and differentiator from activities are that services run at a higher priority than inactive or invisible activities. This means that it is less likely the Android system will ever terminate them for resource management. Its important to know though that services still process intents on the main UI thread so any long running task will block the ui and all other events. There are several options for preventing this that we talk about on the Async Page. 
+        <p>Services are another integral piece of Android development. As we dive into services, you will see some similarity between them, and the aforementioned activities. However, a service, unlike an activity, does not interact directly with the user. Therefore, there is no GUI component to it. These are instead, powerful background processes. A major benefit, and differentiator from activities are that services run at a higher priority than inactive or invisible activities. This means that it is less likely the Android system will ever terminate them for resource management. Its important to know though that services still process intents on the main UI thread so any long running task will block the ui and all other events. There are several options for preventing this that we talk about on the Async Page. 
         </p>
         <h3>States of a Service</h3>
         <p>A service can exist in two different states, started(unbounded), or bounded. 
@@ -142,6 +142,8 @@ public class ExampleActivity extends Activity {
 <p> Although it is possible to obtain a reference to a service without using binding, this is the preferred method. A little more overhead is required up front, but this method allows for inter-process communication between applications. Essentially, an application from one app could bind to a service from another! Through services, we see some of the true power of android development. </p>
 <br>
 <p> Source example binding-implementation code based off: <a href="http://dharmendra4android.blogspot.com/2012/05/bind-service-using-ibinder-class.html">http://dharmendra4android.blogspot.com/2012/05/bind-service-using-ibinder-class.html</a> </p>
+<p> Source of general android service info: <a href="http://www.vogella.com/tutorials/AndroidServices/article.html">http://www.vogella.com/tutorials/AndroidServices/article.html</a> and <a href="http://www.tutorialspoint.com/android/android_services.htm">http://www.tutorialspoint.com/android/android_services.htm</a>
+
 
 </body>
 </html>
