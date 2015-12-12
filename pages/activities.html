@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+        <title>Android Tutorial</title>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"></link>
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+    <h1>Activities</h1>
+
+    <p>Activities control a screen in android. Every logical group of views that interact together all can be represented by an activity. Activities are useful because it allows a modular class to allow the grouping of everything GUI related. Activites like we mentioned before are subscribed to the event queue as well as the android lifecycle so they are able to receive intents from all different apps throughout the system.</p>
+
+    <h3>Lifecycle</h3>
+    <p> In every Android application, there is a "Main Activity." This is the
+    activity that launches upon startup. It is the initial screen of the
+    application, whether the initial screen is actually functional or if the
+    screen is just an initial splash screen.</p>
+    
+    <h3>Android lifecycle</h3>
+
+    <p> Each activity in Android must implement an <pre>onCreate</pre> function
+    which is called when the activity is initialized. This call should do a
+    number of important things, not least of which is setting the content view
+    with the <pre>setContentView</pre> function. This will give the activity a
+    "face" of sorts since it loads all the viewable content onto the page. In
+    addition on the <pre>onCreate</pre> function, Android also allows the user
+    to override some other methods. These include <pre>onPause</pre>, which is
+    called once the activity is suspended into the background; the
+    <pre>onDestroy</pre> method, called right before the application is
+    destroyed (killed) by the user; the <pre>onResume</pre> method, which is
+    called after coming out of the pause state; the <pre>onStart</pre> method
+    is called at the beginning of the application's life and its counter
+    <pre>onStop</pre> is called at the end of the application's life cycle.
+    The final method that gets called is the on destroy when the activity is finally destroyed.
+    </p>
+
+    <h3>Multiple Activites</h3>
+    <p> A single app may contain more than a single activity. Indeed, a single
+    app can contain many different activities.  These activities may be
+    switched between by use of the Android intent system. The intent system is
+    the way an application talks to the Dalvik virtual machine, and if the
+    request is to change an activity, then the virtual machine will then switch
+    the screen to the correct screen.  </p>
+
+    <h3>Layout inflater</h3>
+    <p>Android realized how hard it is to program guis so they provided a unique solution to make user interface design easier. The solution is the layout inflater. All gui related classes have access to a class called the layout inflater. Activites have this built in but fragments you must call it explicitly. What this does is allow you to specify a shell for the gui using xml and then inflate the xml into a java tree representation. We will see how this works next in the example. </p>
+
+    <h3>Example</h3>
+    <p>Now that we have talked about the different pieces to an activity lets look at a quick shell of how they work.</p>
+
+    <pre><code>
+public class MainActivity2Activity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //Uses the layout inflaters to turn the xml into a java tree
+        setContentView(R.layout.activity_main_activity2);
+        
+        //Here you can register call backs by pulling the views out of the tree
+        
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main_activity2, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+} 
+    </code></pre>
+    <br>
+    <p>Now we need to specify the xml for the activity to inflate.</p>
+    <pre><code>
+&ltRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="main.foundationsapp.MainActivity2Activity"&gt
+
+    &ltTextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" /&gt
+
+&lt/RelativeLayout&gt
+    </code></pre>
+
+    <p>Finally, we need to register the activity in the android manifest so the app knows to register the activity for events.</p>
+    <pre><code>
+&lt?xml version="1.0" encoding="utf-8"?&gt
+&ltmanifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="main.foundationsapp" &gt
+
+    &ltapplication
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" &gt
+        &ltactivity
+            android:name=".MainActivity"
+            android:label="@string/app_name" &gt
+            &ltintent-filter&gt
+                &ltaction android:name="android.intent.action.MAIN" /&gt
+
+                &ltcategory android:name="android.intent.category.LAUNCHER" /&gt
+            &lt/intent-filter&gt
+        &lt/activity&gt
+        &ltactivity
+            android:name=".MainActivity2Activity"
+            android:label="@string/title_activity_main_activity2" &gt
+        &lt/activity&gt
+    &lt/application&gt
+&lt/manifest&gt
+
+    </code></pre>
+
+    <p>
+    Often in an application, we don't actually want more than a couple activities. This is because we want to keep an
+    overall activity for the user to interact with, but just have dialogs and different sub components to the application.
+    In this case, Android employs a concept called "fragments."
+    </p>
+
+
+    <h1>Fragments</h1>
+    <p>
+    Fragments are related to Activities, but are not the same. Fragments
+    are like activities in that a fragment is a part of the user interface that
+    the user can interact with, but unlike an activity, they are not standalone
+    and must always be a part of an activity. In this sense, an Activity contains
+    a Fragment, but not the other way around.
+    </p>
+
+    <p>
+    The callbacks that one may override in the <pre>Fragment</pre> class are
+    the same as those for an Activity.
+    </p>
+
+    <p>
+    One of the best features of a Fragments is that they allow the application
+    to dynamically remove and add them to certain activities. This allows for
+    the application to be written in a dynamic matter rather than a static manner.
+    </p>
+
+    <p>
+    Fragments also allow a single "widget" to be created and also appear in multiple
+    different parts of the application. This is especially true for when there are multiple
+    different activities that need to have the same fragment; such a fragment might be a
+    shared map of the user's location. These fragments can then talk to their parent
+    activity by sending events to them via callbacks. Every fragment can specify an
+    interface that their parent activities must implement. This allows the communication
+    to flow in from fragment to activity.
+    </p>
+
+
+</body>
+</html>
