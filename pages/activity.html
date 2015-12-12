@@ -2,7 +2,7 @@
 <html lang="en" >
 
 <head>
-        <title>Node JS Tutorial</title>
+        <title>Activitie &amp; Fragmentss</title>
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
@@ -21,17 +21,78 @@
     <h1>Activities</h1>
 
     <p>
-    In Android, there is a concept called "activities." An activity is essentially a screen in your
-    current application. The reason it is called an activity is because it is supposed to represent
-    a wholly contained activity the user can preform on a system.
+    All programs there is a need for an entry point. In C/C++ there's a function called <pre>main</pre>. In Java,
+    there are classes that have a static <pre>main</pre>. A similar concept exists in Android called "Activities."
+    An activity is essentially a screen in your current application. The theory is that each activity represents
+    its own logically separate activity in a program, such as selecting a destination in a navigation app or inputing
+    parameters into a fitness App.
+    </p>
+
+    <p> In every Andorid application, there is a "Main Activity." This is the
+    activity that launches upon startup. It is the initial screen of the
+    application, whether the initial screen is actually functional or if the
+    screen is just an initial splash screen.  </p>
+
+    <p> Each activity in Android must implement an <pre>onCreate</pre> function
+    which is called when the activity is initialized. This call should do a
+    number of important things, not least of which is setting the content view
+    with the <pre>setContentView</pre> function. This will give the activity a
+    "face" of sorts since it loads all the viewable content onto the page. In
+    addition on the <pre>onCreate</pre> function, Android also allows the user
+    to override some other methods. These include <pre>onPause</pre>, which is
+    called once the activity is suspended into the background; the
+    <pre>onDestroy</pre> method, called right before the application is
+    destroyed (killed) by the user; the <pre>onResume</pre> method, which is
+    called after coming out of the pause state; the <pre>onStart</pre> method
+    is called at the beginning of the application's life and its counter
+    <pre>onStop</pre> is called at the end of the application's life cycle.
+    </p>
+
+    <p> A single app may contain more than a single activity. Indeed, a single
+    app can contain many different activities.  These activities may be
+    switched between by use of the Android intent system. The intent system is
+    the way an application talks to the Dalvik virtual machine, and if the
+    request is to change an activity, then the virtual machine will then switch
+    the screen to the correct screen.  </p>
+
+    <p>
+    Often in an application, we don't actually want more than a couple activities. This is because we want to keep an
+    overall activity for the user to interact with, but just have dialogs and different sub components to the application.
+    In this case, Android employs a concept called "fragments."
+    </p>
+
+
+    <h1>Fragments</h1>
+
+    <p>
+    Fragments are related to Activities, but are not the same. Fragments
+    are like activities in that a fragment is a part of the user interface that
+    the user can interact with, but unlike an activity, they are not standalone
+    and must always be a part of an activity. In this sense, an Activity contanis
+    a Fragment, but not the other way around.
     </p>
 
     <p>
-    Each activity in Android must implement an <pre>onCreate</pre> function which is called when
-    the activity is initialized. This call should do a number of important things, not least of which
-    is setting the content view with the <pre>setContentView</pre> function. This will give the activity
-    a "face" of sorts since it loads all the viewable content onto the page.
+    The callbacks that one may override in the <pre>Fragment</pre> class are
+    the same as those for an Activity.
     </p>
+
+    <p>
+    One of the best features of a Fragments is that they allow the application
+    to dynamically remove and add them to certain activities. This allows for
+    the application to be written in a dynamic matter rather than a static manner.
+    </p>
+
+    <p>
+    Fragments also allow a single "widget" to be created and also appear in multiple
+    different parts of the application. This is especially true for when there are multiple
+    different activities that need to have the same fragment; such a fragment might be a
+    shared map of the user's location. These fragments can then talk to their parent
+    activity by sending events to them via callbacks. Every fragment can specify an
+    interface that their parent activities must implement. This allows the communication
+    to flow in from fragment to activity.
+    </p>
+
 
 </body>
 </html>
